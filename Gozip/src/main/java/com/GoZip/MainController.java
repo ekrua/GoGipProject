@@ -14,7 +14,7 @@ public class MainController {
 	
 	@RequestMapping("/")
 	public String main() {
-		return "Main";
+		return "message";
 	}
 	@RequestMapping("login.do")
 	public String login(String id,String pwd) {

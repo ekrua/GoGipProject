@@ -13,22 +13,35 @@ padding: 0px;
 }
 header{
 margin: 0px auto;
+margin-top: 10px;
 width: 1000px;
-background-color: white;
-padding: 5px;
 display: flex;
 flex-direction: row;
-justify-content: space-between;
+box-sizing: border-box;
 }
-img{
-	width: 65px;
-	height: 30px;
+#btn{
+width: 200px;
+margin-top: 25px;
+}
+#img{
+width: 600px;
+height: 70px;
+text-align: center;
+}
+#img > img{
+width: 120px;
+height: 70px;
+}
+#member{
+width: 200px;
+margin-top: 25px;
+text-align: right;
 }
 a{
 text-decoration:none;
 font-size: 15px;
 color: gray;
-padding: 0px 10px 0px 10px;
+padding: 0px 5px 0px 5px; 
 }
 </style>
 
@@ -47,7 +60,7 @@ padding: 0px 10px 0px 10px;
 			</div>
 			<p>&nbsp;</p>
 			<div id="member">
-			<a href="/">로그인</a><a href="/">회원가입</a>
+			<a href="/">로그인</a>|<a href="/">회원가입</a>
 			</div>
 	</header>
 </body>
