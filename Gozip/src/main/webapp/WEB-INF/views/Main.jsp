@@ -34,19 +34,15 @@ header {
 .btn {
 	width: 100%;
 }
-
-.member {
-	margin-left: 600px;
-}
-
 .box1>a {
 	text-decoration: none;
 	font-style: none;
 	padding: 90px 10px 0px 10px;
 	color: white;
+	text-shadow: 2px 2px 3px black;
 }
 a{
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: bold;
 }
 .header_box{
@@ -54,7 +50,7 @@ top:-300px;
 position: relative;
 }
 #member_login{
-margin-left: 645px;
+margin-left: 515px;
 }
 
 
@@ -66,6 +62,7 @@ padding-left: 90px;
 }
 h3{
 font-size: 30px;
+text-shadow: 3px 3px 4px black;
 }
 table {
 	border-collapse: collapse;
@@ -82,8 +79,6 @@ width: 220px;
 height: 200px;
 }
 .bx-wrapper {border:0;background:#fbfbfb;box-shadow:none;}
-
-
 .company{
 margin-top: 100px;
 margin-bottom: 50px;
@@ -101,27 +96,6 @@ border-radius: 5px;
 .btn_p{
 margin-left: 620px;
 }
-
-
-
-
- footer{
-        width: 1000px;
-        height: auto;
-        padding: 20px;
-        align-items: center;
-        white-space: nowrap;
-        margin-left: 300px;
-    }
-    a{
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
-    }
-    .notice{
-        color: gray;
-    }
-
 </style>
 
 <script>
@@ -166,10 +140,10 @@ margin-left: 620px;
 		<img src="/img/final_logo.png">
 		<div class="btn">
 			<div class="box1">
-				<a href="/">test1</a> <a href="/">test2</a> <a href="/">test3</a><a	href="/">test4</a>
+				<a href="/">테테테테테</a> <a href="/">스스스스스</a> <a href="/">트트트트트</a><a	href="/">테테테테테</a>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
-				<a href="/" id="member_login">로그인 </a><a href="/">회원가입</a>
+				<a href="/" id="member_login">로로그그이인</a><a href="/">회회원원가입</a>
 			</div>
 		</div>
 </div>

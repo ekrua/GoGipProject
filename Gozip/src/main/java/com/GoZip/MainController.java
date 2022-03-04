@@ -16,10 +16,8 @@ public class MainController {
 	public String main() {
 		return "message";
 	}
-	@RequestMapping("login.do")
-	public String login(String id,String pwd) {
-		System.out.println(id);
-		System.out.println(pwd);
-		return "Main";
+	@RequestMapping("message_box.do")
+	public String message_box() {
+		return "message_box";
 	}
 }
