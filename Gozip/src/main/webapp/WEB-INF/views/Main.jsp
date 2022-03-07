@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,10 +50,12 @@ a{
 top:-300px;
 position: relative;
 }
-#member_login{
-margin-left: 515px;
+.member_login{
+margin-left: 570px;
 }
-
+.member_login_2{
+margin-left: 565px;
+}
 
 section{
 margin: 0px auto;
@@ -140,10 +143,15 @@ margin-left: 620px;
 		<img src="/img/final_logo.png">
 		<div class="btn">
 			<div class="box1">
-				<a href="/">테테테테테</a> <a href="/">스스스스스</a> <a href="/">트트트트트</a><a	href="/">테테테테테</a>
+				<a href="ask.do">의뢰하기</a> <a href="board.do">자랑하기</a> <a href="message_box.do">메세지 함</a><a href="message.do">랭킹 페이지</a>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
-				<a href="/" id="member_login">로로그그이인</a><a href="/">회회원원가입</a>
+				<c:if test="${sessionScope.member != null }">
+				<a href="logout.do" class="member_login_2">로그아웃</a><a href="updateMember.do">내 정보 수정</a>  
+				</c:if>
+				<c:if test="${sessionScope.member == null }">
+				<a href="log.do" class="member_login">로그인</a><a href="signup.do">회원가입</a>
+				</c:if>
 			</div>
 		</div>
 </div>

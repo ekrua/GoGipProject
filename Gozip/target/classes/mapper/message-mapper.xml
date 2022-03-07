@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.GoZip.mapper.MessageMapper">
+	<insert id="writeMessage" parameterType="message">
+	insert into message(id,rv_id,m_content)
+				values(#{id},#{rv_id},#{m_content})
+	</insert>
+	<select id="selectId" parameterType="String" resultType="message">
+	select * from member where id like #{rv_id}
+	</select>
+</mapper>

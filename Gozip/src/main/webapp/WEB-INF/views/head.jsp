@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,23 +45,34 @@ color: gray;
 padding: 0px 5px 0px 5px; 
 }
 </style>
-
+<script>
+$(function() {
+	$('#MainImg').click(function() {
+		location.href = '/';
+	});
+});
+</script>
 </head>
 <body>
 	<header>
 			<div id="btn">
-			<a href="/">test1</a>
-			<a href="/">test2</a>
-			<a href="/">test3</a>
-			<a href="/">test4</a>
+			<a href="ask.do">의뢰하기</a>
+			<a href="board.do">자랑하기</a>
+			<a href="message_box.do">메세지함</a>
+			<a href="message.do">랭킹</a>
 			</div>
 			<p>&nbsp;</p>
 			<div id="img">
-			<img src="/img/final_logo.png">
+			<img src="/img/final_logo.png" id="MainImg">
 			</div>
 			<p>&nbsp;</p>
 			<div id="member">
-			<a href="/">로그인</a>|<a href="/">회원가입</a>
+			<c:if test="${sessionScope.member == null }">
+			<a href="log.do">로그인</a>|<a href="signup.do">회원가입</a>
+			</c:if>
+			<c:if test="${sessionScope.member != null }">
+			<a href="logout.do">로그아웃</a>|<a href="updateMember.do">정보수정</a>
+			</c:if>
 			</div>
 	</header>
 </body>
