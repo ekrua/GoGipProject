@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.GoZip.mapper.BoardMapper">
+	<select id="selectBoardList" parameterType="int" resultType="board">
+		select * from (select ceil(rownum / 7) as pageno, b.* from 
+				(select * from board order by b_no desc) b) where pageno = #{no}
+	</select>
+	<select id="selectAllCount" resultType="int">
+		select count(*) from board
+	</select>
+	<insert id="insertBoard" parameterType="board">
+		insert into board(b_no, b_title, b_content, b_writer) 
+		values(b_no.nextval,#{b_title},#{b_content},#{b_writer})
+	</insert>
+	<select id="selectBoard" parameterType="int" resultType="board">
+		select * from board where b_no = #{b_no}
+	</select>
+	<update id="addCount" parameterType="int">
+		update board set b_count = b_count + 1 where b_no = #{b_no}
+	</update>
+	<update id="updateBoard" parameterType="map">
+		update board set b_title = #{b_title}, b_content = #{b_content} where b_no = #{b_no} 
+	</update>	
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where b_no = #{b_no}
+	</delete>
+	<insert id="insertBoardLike" parameterType="map">
+		insert into b_like values(#{b_no},#{id})
+	</insert>
+	<delete id="deleteBoardLike" parameterType="map">
+		delete from b_like where b_writer like #{id} and b_no = #{b_no} 
+	</delete>
+	<select id="selectBoardLike" parameterType="int" resultType="int">
+		select count(*) from b_like where b_no = #{b_no}
+	</select>
+	<select id="selectSearchBoard" parameterType="map" resultType="board">
+		select * from board
+		<choose>
+			<when test="kind.equals('id')">
+				where b_writer like #{search}
+			</when>
+			<when test="kind.equals('btitle')">
+				where b_title like '%' || #{search} || '%'
+			</when>
+			<otherwise>
+				where b_content like '%' || #{search} || '%'
+			</otherwise>
+		</choose>		
+		 order by b_no desc
+	</select>
+	
+</mapper>
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.GoZip.mapper.MemberMapper">
+	<select id="login" parameterType="map" resultType="member">
+		select * from member where id = #{id} and pw = #{pw}
+	</select>
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER(id,pw,name,BIRTH,EMAIL,PHONE) VALUES(#{id},#{pw},#{name},#{birth},#{email},#{phone})
+	</insert>
+	
+	<select  id="idCheck" parameterType="String" resultType="int">
+		select count(*) from member where id = #{id}
+	</select>
+	
+	<update id="updateMember" parameterType="member">
+		update member set pw = #{pw}, NAME = #{name}, BIRTH = #{birth}, EMAIL = #{email}, PHONE = #{phone} where ID = #{id}
+	</update>
+</mapper>

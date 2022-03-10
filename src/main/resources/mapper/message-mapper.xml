@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.GoZip.mapper.MessageMapper">
+	<insert id="writeMessage" parameterType="message">
+	insert into message(m_no,rv_id,send_id,m_content,m_img,m_date) 
+	values(message_seq.nextval,#{rv_id},#{send_id},#{m_content},UTL_RAW.CAST_TO_RAW(#{m_img}),sysdate)
+	</insert>
+	<select id="selectId" parameterType="String" resultType="member">
+	select * from member where id like #{rv_id}
+	</select>
+	<select id="selectAllCount" resultType="int">
+	select count(*) from message 
+	</select>
+	<select id="send_selectMessageList" parameterType="map" resultType="message">
+	select * from (select ceil(rownum / 9) as pageno, m.* from 
+				(select message.m_no,message.rv_id,message.send_id,message.m_content,message.m_date 
+				from message where send_id like #{id} order by m_no desc) m)
+				 where pageno = #{page}
+	</select>
+	<select id="rv_selectMessageList" parameterType="map" resultType="message">
+	select * from (select ceil(rownum / 9) as pageno, m.* from 
+				(select message.m_no,message.rv_id,message.send_id,message.m_content,message.m_date 
+				from message where rv_id like #{id} order by m_no desc) m)
+				 where pageno = #{page}
+	</select>
+</mapper>
