@@ -65,7 +65,6 @@ padding-left: 90px;
 }
 h3{
 font-size: 30px;
-text-shadow: 3px 3px 4px black;
 }
 table {
 	border-collapse: collapse;
@@ -143,11 +142,11 @@ margin-left: 620px;
 		<img src="/img/final_logo.png">
 		<div class="btn">
 			<div class="box1">
-				<a href="ask.do">의뢰하기</a> <a href="board.do">자랑하기</a> <a href="message_box.do">메세지 함</a><a href="message.do">랭킹 페이지</a>
+				<a href="ask.do">의뢰하기</a> <a href="board.do">자랑하기</a> <a href="product.do">상품페이지</a><a href="message.do">쪽지 쓰기</a>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 				<c:if test="${sessionScope.member != null }">
-				<a href="logout.do" class="member_login_2">로그아웃</a><a href="updateMember.do">내 정보 수정</a>  
+				<a href="logout.do" class="member_login_2">로그아웃</a><a href="updateMember.do">내 정보</a>  
 				</c:if>
 				<c:if test="${sessionScope.member == null }">
 				<a href="log.do" class="member_login">로그인</a><a href="signup.do">회원가입</a>

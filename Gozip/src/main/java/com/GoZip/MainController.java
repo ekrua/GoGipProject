@@ -1,21 +1,24 @@
 package com.GoZip;
 
+import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.GoZip.dto.BoardDTO;
 import com.GoZip.dto.MemberDTO;
@@ -24,17 +27,21 @@ import com.GoZip.service.BoardService;
 import com.GoZip.service.MemberService;
 import com.GoZip.service.MessageService;
 import com.GoZip.vo.paggingVO;
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
+
+import ch.qos.logback.core.util.FileUtil;
 
 @Controller
 public class MainController {
 	private MemberService memberService;
 	private BoardService boardService;
 	private MessageService messageService;
-	//----------------------------------------성일이형 구간-------------------------
-	HttpServletRequest request;
 
+	@Autowired
+	ServletContext application;
 	
+
+
+	//----------------------------------------성일이형 구간-------------------------
 
 	public MainController(MemberService memberService, BoardService boardService, MessageService messageService) {
 		this.memberService = memberService;
@@ -58,25 +65,25 @@ public class MainController {
 	public String log() {
 		return "login";
 	}
-	
+
 	//비토인테리어로 이동
 	@RequestMapping("bitointerior.do")
 	public void bitointerior(HttpServletResponse httpServletResponse) throws IOException {
-	    httpServletResponse.sendRedirect("https://blog.naver.com/ecowow");
+		httpServletResponse.sendRedirect("https://blog.naver.com/ecowow");
 	}
-	
+
 	//상상리퍼블릭으로 이동
 	@RequestMapping("sangsang.do")
 	public void sangsang(HttpServletResponse httpServletResponse) throws IOException {
 		httpServletResponse.sendRedirect("https://sangsangrepublic.imweb.me");
 	}
-	
+
 	//인테리어랩으로 이동
 	@RequestMapping("interiorlab.do")
 	public void interiorlab(HttpServletResponse httpServletResponse) throws IOException {
 		httpServletResponse.sendRedirect("https://smartstore.naver.com/interiorlab"); 
 	}
-	
+
 	// 로그인 기능
 	@RequestMapping("/login.do")
 	public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session)
@@ -136,19 +143,19 @@ public class MainController {
 		memberService.updateMember(new MemberDTO(id, pw, name, birth, email, phone));
 		return "Main";
 	}
-	
+
 	// 외뢰하기로 이동
 	@RequestMapping("ask.do")
 	public String ask() {
 		return "ask";
 	}
-	
+
 	//게시판 초기화
 	@RequestMapping("boardreset.do")
 	public String boardreset() {
 		return "redirect:/";
 	}
-	
+
 	// 게시판으로 이동
 	@RequestMapping("board.do")
 	public String boardList(HttpServletRequest request) {
@@ -297,18 +304,87 @@ public class MainController {
 		return "message";
 	}
 	@RequestMapping("message_box.do")
-	public String message_box() {
+	public String message_box(HttpServletRequest request,HttpSession session) {
+		int page = 1;
+		String  mode = "rv";
+		if(request.getParameter("mode") != null) {
+			mode = request.getParameter("mode");
+		};
+		String id = "test"; 
+		if(session.getAttribute("member") != null) {
+			id = ((MemberDTO) session.getAttribute("member")).getId();
+		}
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mode", mode);
+		map.put("page", page);
+		map.put("id", id);
+		List<MessageDTO> list = null;
+		
+		if(mode.equals("rv")) {
+			list = messageService.rv_selectMessageList(map);
+			request.setAttribute("list", list);
+		}if(mode.equals("send")) {
+			list = messageService.send_selectMessageList(map);
+			request.setAttribute("list", list);
+		}
+				// 페이징 데이터 셋팅
+				int count = messageService.selectAllCount();
+
+				paggingVO vo = new paggingVO(count, page, 9, 4);
+				request.setAttribute("pagging", vo);
+				request.setAttribute("mode", mode);
+
 		return "message_box";
 	}
-	
+	//메세지 작성 페이지
 	@RequestMapping("message_write.do")
-	public String message_write(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
-		String id = ((MemberDTO) session.getAttribute("member")).getId();
+	public String message_write(HttpServletRequest request,HttpServletResponse response,
+			HttpSession session, MultipartFile photo) {
+		String send_id = ((MemberDTO) session.getAttribute("member")).getId();
 		String rv_id = request.getParameter("rv_id");
 		String m_content = request.getParameter("m_content");
-		MessageDTO result = messageService.selectId(rv_id);
+		MemberDTO result = messageService.selectId(rv_id);
+		String webPath = "/resources/upload";
+		String savePath = application.getRealPath(webPath);
+		System.out.println(savePath);
+
+		String m_img = "no_file";
+
+		//업로드 된 파일이 존재한다면
+		if( !photo.isEmpty() ){
+			//업로드 된 실제 파일명
+			m_img = photo.getOriginalFilename();
+
+			//저장할 파일의 경로
+			File saveFile = new File(savePath, m_img);
+
+			if(!saveFile.exists()){
+
+				saveFile.mkdirs();
+
+			}else{
+				//동일한 파일명이 존재할 경우 현재 업로드 시간을 붙여서 중복을 
+				//방지해준다.
+				long time = System.currentTimeMillis();
+				m_img = String.format("%d_%s",time,m_img);
+				saveFile = new File(savePath, m_img);				
+			}
+
+			//업로드된 파일은 MultipartResolver라는 클래스가 지정한 임시저장소에 있는데
+			//임시저장소에 있는 파일은 일정 시간이 지나면 사라지기 때문에, 내가 지정해준 
+			//경로로 복사해준다.
+			try {
+				photo.transferTo(saveFile);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}//if( !photo.isEmpty() )
 		if(result != null) {
-			messageService.writeMessage(new MessageDTO(id, rv_id, m_content));
+			messageService.writeMessage(new MessageDTO(send_id, rv_id, m_content, m_img));
 		}else {
 			try {
 				response.setContentType("text/html;charset=utf-8");
@@ -318,8 +394,78 @@ public class MainController {
 			}
 			return null;
 		}
-		
-
-		return "message_box";
+		return "redirect:message_box.do";
 	}
+	//-----------------------------------------예지누낮-----------------------
+	@RequestMapping("product.do")
+	public String product() {
+		
+		return "product";
+	}
+	@RequestMapping("product_serve.do")
+	public String product_serve() {
+		
+		return "product_serve";
+	}
+	//------------------------------------혁준이형-----------------------------------
+	@RequestMapping("admin.do")
+	public String admin() {
+		
+		return "admin";
+	}
+	@RequestMapping("post_page.do")
+	public String post_page() {
+		
+		return "post_page";
+	}
+	@RequestMapping("comment_page.do")
+	public String comment_page() {
+		
+		return "comment_page";
+	}
+	@RequestMapping("member_page.do")
+	public String member_page() {
+		
+		return "member_page";
+	}
+	@RequestMapping("company_page.do")
+	public String company_page() {
+		
+		return "company_page";
+	}
+	@RequestMapping("report_page.do")
+	public String report_page() {
+		
+		return "report_page";
+	}
+	@RequestMapping("follow.do")
+	public String follow() {
+		
+		return "follow";
+	}
+	//--------------------------------------준우형--------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

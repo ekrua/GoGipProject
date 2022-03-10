@@ -58,8 +58,8 @@ $(function() {
 			<div id="btn">
 			<a href="ask.do">의뢰하기</a>
 			<a href="board.do">자랑하기</a>
-			<a href="message_box.do">메세지함</a>
-			<a href="message.do">랭킹</a>
+			<a href="product.do">상품페이지</a>
+			<a href="message.do">쪽지</a>
 			</div>
 			<p>&nbsp;</p>
 			<div id="img">
@@ -71,7 +71,7 @@ $(function() {
 			<a href="log.do">로그인</a>|<a href="signup.do">회원가입</a>
 			</c:if>
 			<c:if test="${sessionScope.member != null }">
-			<a href="logout.do">로그아웃</a>|<a href="updateMember.do">정보수정</a>
+			<a href="logout.do">로그아웃</a>|<a href="profile.do">정보수정</a>
 			</c:if>
 			</div>
 	</header>

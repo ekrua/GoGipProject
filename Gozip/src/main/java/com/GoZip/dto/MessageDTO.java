@@ -4,44 +4,46 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("message")
 public class MessageDTO {
-	private String id;
+	private String m_no;
+	private String send_id;
 	private String rv_id;
 	private String m_content;
 	private String m_img;
 	private String m_date;
-
 	public MessageDTO() {
 	}
-
-	public MessageDTO(String id, String rv_id, String m_content, String m_img, String m_date) {
+	
+	public MessageDTO(String m_no, String send_id, String rv_id, String m_content, String m_img, String m_date) {
 		super();
-		this.id = id;
+		this.m_no = m_no;
+		this.send_id = send_id;
 		this.rv_id = rv_id;
 		this.m_content = m_content;
 		this.m_img = m_img;
 		this.m_date = m_date;
 	}
 
-	public MessageDTO(String id, String rv_id, String m_content) {
+	public MessageDTO(String send_id, String rv_id, String m_content, String m_img) {
 		super();
-		this.id = id;
+		this.send_id = send_id;
 		this.rv_id = rv_id;
 		this.m_content = m_content;
+		this.m_img = m_img;
 	}
 
-	public String getId() {
-		return id;
+	public String getsend_id() {
+		return send_id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setsend_id(String send_id) {
+		this.send_id = send_id;
 	}
 
-	public String getRv_id() {
+	public String getrv_id() {
 		return rv_id;
 	}
 
-	public void setRv_id(String rv_id) {
+	public void setrv_id(String rv_id) {
 		this.rv_id = rv_id;
 	}
 
@@ -53,11 +55,11 @@ public class MessageDTO {
 		this.m_content = m_content;
 	}
 
-	public String getm_img() {
+	public String getM_img() {
 		return m_img;
 	}
 
-	public void setm_img(String m_img) {
+	public void setM_img(String m_img) {
 		this.m_img = m_img;
 	}
 
@@ -69,12 +71,4 @@ public class MessageDTO {
 		this.m_date = m_date;
 	}
 
-	@Override
-	public String toString() {
-		return "MessageDTO [id=" + id + ", rv_id=" + rv_id + ", m_content=" + m_content + ", m_img=" + m_img
-				+ ", m_date=" + m_date + "]";
-	}
-	
-	
-	
 }

@@ -88,16 +88,26 @@ button:hover{
 	margin-right: 188px;
 }
 </style>
-<script>
+<script type="text/javascript">
+$(function() {
+	$("#rv").click(function() {
+		var mode = "rv";
+		location.href = 'message_box.do?mode='+mode;
+	});
+	$("#send").click(function() {
+		var mode = "send";
+		location.href = 'message_box.do?mode='+mode;
+	});
+});
 </script>
 </head>
 <body>
-<!--<c:if test="${sessionScope.member == null}">
+<c:if test="${sessionScope.member == null}">
 		<script>
 			alert('로그인해야 이용하실수 있습니다');
 			location.href='/';
 		</script>
-	</c:if>-->
+	</c:if>
 	<header>
 	<%@include file="/WEB-INF/views/head.jsp" %>
 	</header>
@@ -106,14 +116,14 @@ button:hover{
 		<h2>메세지 보내기</h2>
 		<hr>
 		<div id="message_link">
-		<a href="message_box.do?mode=">송신 메세지</a><a href="message_box.do?mode=">수신 메세지</a>
+		<a id="rv">수신 메세지</a><a id="send">송신 메세지</a>
 		</div>
 		<form action="message_write.do" method="post" enctype="multipart/form-data">
 			<div class="box">
 				<p>보내는 사람 : ${sessionScope.member.id }</p>
 				<p>받는 사람 : <input type="text" name="rv_id"></p>
 				<p><textarea placeholder="내용을 입력하세요" name="m_content"></textarea></p>
-				<input type="file" name="profile" id="file" multiple="multiple">
+				<input type="file" id="file" name="photo">
 				<button>전송</button>
 			</div>
 		</form>

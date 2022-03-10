@@ -331,12 +331,12 @@ li:nth-child(3){
 <%@include file="/WEB-INF/views/head.jsp" %>
 </header>
 <body>
-   <!--<c:if test="${sessionScope.member.id==null}">
+   <c:if test="${sessionScope.member.id==null}">
       <script>
          alert('로그인해야 이용하실수 있습니다.');
          location.href = '/';
       </script>
-   </c:if>-->
+   </c:if>
 <div class="board_wrap">
 <nav>
   <div class="container">
